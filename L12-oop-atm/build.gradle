@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow'
+}
+
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.20'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+}
+
+task shadowSetterDemo(type: Jar, dependsOn: shadowJar) {
+    archiveBaseName.set('setterDemo')
+    manifest {
+        attributes 'Main-Class': 'ru.otus.instrumentation.setter.SetterDemo'
+        attributes 'Premain-Class': 'ru.otus.instrumentation.setter.Agent'
+    }
+    from zipTree(shadowJar.archiveFile)
+}
+
+task shadowProxyDemo(type: Jar, dependsOn: shadowJar) {
+    archiveBaseName.set('proxyDemo')
+    manifest {
+        attributes 'Main-Class': 'ru.otus.instrumentation.proxy.ProxyDemo'
+        attributes 'Premain-Class': 'ru.otus.instrumentation.proxy.Agent'
+    }
+    from zipTree(shadowJar.archiveFile)
+}
+
+task shadowSummatorDemo(type: Jar, dependsOn: shadowJar) {
+    archiveBaseName.set('summatorDemo')
+    manifest {
+        attributes 'Main-Class': 'ru.otus.instrumentation.changer.SummatorDemo'
+        attributes 'Premain-Class': 'ru.otus.instrumentation.changer.Agent'
+    }
+    from zipTree(shadowJar.archiveFile)
+}
+
+tasks.build.dependsOn tasks.shadowSetterDemo
+tasks.build.dependsOn tasks.shadowProxyDemo
+tasks.build.dependsOn tasks.shadowSummatorDemo
