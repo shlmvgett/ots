@@ -1,14 +1,17 @@
 package homework.utils;
 
 import homework.Atm;
-import homework.IAtm;
+import homework.AtmImpl;
 import homework.models.Account;
 import homework.models.Banknote;
 import homework.models.BanknotesBox;
+import homework.models.BanknotesBoxImpl;
 import homework.models.DebitCard;
-import homework.models.IBankCard;
+import homework.models.Denomination;
+import homework.models.BankCard;
 import java.util.Currency;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -17,24 +20,25 @@ public class AtmHelpers {
   private AtmHelpers() {
   }
 
-  public static IBankCard prepareCard() {
+  public static BankCard prepareCard() {
     Account account = new Account();
     return new DebitCard(account);
   }
 
   // Init ATM with test data
-  public static IAtm prepareAtm() {
+  public static Atm prepareAtm() {
     Map<Currency, BanknotesBox> banknotes = new HashMap<>(Map.of(
-        Currency.getInstance("RUB"), new BanknotesBox(new TreeMap<>(Map.of(
-            new Banknote(Currency.getInstance("RUB"), 100), 30,
-            new Banknote(Currency.getInstance("RUB"), 1_000), 20,
-            new Banknote(Currency.getInstance("RUB"), 10_000), 10
-            ))),
-        Currency.getInstance("USD"), new BanknotesBox(new TreeMap<>(Map.of(
-            new Banknote(Currency.getInstance("USD"), 100), 10,
-            new Banknote(Currency.getInstance("USD"), 1_000), 5
-        )))
+        Currency.getInstance("RUB"), new BanknotesBoxImpl(
+            new TreeMap<>(Map.of(
+                Denomination.D_100, List.of(new Banknote(100), new Banknote(100), new Banknote(100), new Banknote(100), new Banknote(100), new Banknote(100)),
+                Denomination.D_1000,
+                List.of(new Banknote(1000), new Banknote(1000), new Banknote(1000), new Banknote(1000), new Banknote(1000), new Banknote(1000),
+                    new Banknote(1000), new Banknote(1000)),
+                Denomination.D_10000,
+                List.of(new Banknote(10_000), new Banknote(10_000), new Banknote(10_000), new Banknote(10_000), new Banknote(10_000), new Banknote(10_000),
+                    new Banknote(10_000))
+            )))
     ));
-    return new Atm(banknotes);
+    return new AtmImpl(banknotes);
   }
 }

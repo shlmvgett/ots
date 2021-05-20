@@ -1,14 +1,14 @@
 package homework;
 
 import homework.models.Banknote;
-import homework.models.IBankCard;
+import homework.models.BankCard;
 import homework.utils.AtmHelpers;
 
 public class App {
 
   public static void main(String[] args) {
-    IBankCard card = AtmHelpers.prepareCard();
-    IAtm atm = AtmHelpers.prepareAtm();
+    BankCard card = AtmHelpers.prepareCard();
+    Atm atm = AtmHelpers.prepareAtm();
 
     atm.insertCard(card)
         .displayBalance()

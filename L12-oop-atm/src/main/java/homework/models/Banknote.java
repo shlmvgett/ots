@@ -1,7 +1,6 @@
 package homework.models;
 
 import java.util.Currency;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -9,35 +8,18 @@ import lombok.ToString;
 @ToString
 @Getter
 @AllArgsConstructor
-public class Banknote implements Comparable<Banknote> {
+public class Banknote {
 
   private final Currency currency;
-  private final Integer value;
+  private final Denomination value;
 
   public Banknote(Integer value) {
     this.currency = Currency.getInstance("RUB");
-    this.value = value;
+    this.value = Denomination.fromValue(value);
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Banknote banknote = (Banknote) o;
-    return value.equals(banknote.getValue());
+  public Integer getIntValue() {
+    return value.getValue();
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(value);
-  }
-
-  @Override
-  public int compareTo(Banknote banknote) {
-    return Integer.compare(value, banknote.getValue());
-  }
 }
