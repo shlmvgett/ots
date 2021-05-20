@@ -7,7 +7,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class DebitCard implements IBankCard {
+public class DebitCard implements BankCard {
 
   private final UUID cardNumber;
   private final String cardHolder;
