@@ -1,20 +1,17 @@
 package homework;
 
+import homework.models.BankCard;
 import homework.models.Banknote;
 import homework.models.BanknotesBox;
-import homework.models.BanknotesBoxImpl;
-import homework.models.BankCard;
-import java.util.Currency;
-import java.util.Map;
 
 public class AtmImpl implements Atm {
 
-  private Map<Currency, BanknotesBox> banknotesBoxes;
+  private final BanknotesBox banknotesBox;
   private BankCard currentCard;
 
-  public AtmImpl(Map<Currency, BanknotesBox> banknotesBoxes) {
+  public AtmImpl(BanknotesBox banknotesBox) {
     System.out.println("Brrr... ATM was init: with banknotes");
-    this.banknotesBoxes = banknotesBoxes;
+    this.banknotesBox = banknotesBox;
   }
 
   @Override
@@ -37,11 +34,7 @@ public class AtmImpl implements Atm {
   public Atm putMoney(Banknote banknote) {
     System.out.println("ATM: Add money...");
     currentCard.putMoney(Long.valueOf(banknote.getIntValue()), banknote.getCurrency());
-    if (banknotesBoxes.containsKey(banknote.getCurrency())) {
-      banknotesBoxes.get(banknote.getCurrency()).putMoney(banknote);
-    } else {
-      banknotesBoxes.put(banknote.getCurrency(), new BanknotesBoxImpl(banknote.getValue(), banknote));
-    }
+    banknotesBox.putMoney(banknote);
     return this;
   }
 
@@ -52,13 +45,14 @@ public class AtmImpl implements Atm {
       throw new RuntimeException("Not enough money on your account.");
     }
     currentCard.getMoney(amount);
-    banknotesBoxes.get(currentCard.getAccount().getCurrency()).getMoney(amount);
+    banknotesBox.getMoney(amount, currentCard.getAccount().getCurrency());
     return this;
   }
 
   @Override
   public Atm displayBalance() {
-    System.out.printf("Current balance is: %s for card: %s%n", currentCard.getReadableAmount(), currentCard.getCardNumber());
+    System.out.printf("Current balance is: %s for card: %s%n",
+        currentCard.getReadableAmount(), currentCard.getCardNumber());
     return this;
   }
 }
