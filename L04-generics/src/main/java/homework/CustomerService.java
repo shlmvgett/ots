@@ -8,9 +8,6 @@ public class CustomerService {
 
   private final TreeMap<Customer, String> customersData = new TreeMap<>(Comparator.comparingLong(Customer::getScores));
 
-  // todo: 2. надо реализовать методы этого класса
-  // важно подобрать подходящую Map-у, посмотрите на редко используемые методы, они тут полезны
-
   public void add(Customer customer, String data) {
     customersData.put(customer, data);
   }
