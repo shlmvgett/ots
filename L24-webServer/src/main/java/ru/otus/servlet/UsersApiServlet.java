@@ -33,7 +33,9 @@ public class UsersApiServlet extends HttpServlet {
 
     response.setContentType("application/json;charset=UTF-8");
     ServletOutputStream out = response.getOutputStream();
-    out.print(gson.toJson(userSelected.get()));
+    if (userSelected.isPresent()) {
+      out.print(gson.toJson(userSelected.get()));
+    }
   }
 
   @Override

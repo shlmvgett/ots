@@ -10,6 +10,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import ru.otus.db.core.sessionmanager.TransactionManager;
 import ru.otus.helpers.FileSystemHelper;
 import ru.otus.services.TemplateProcessor;
+import ru.otus.servlet.ApiPaths;
 import ru.otus.servlet.UsersApiServlet;
 import ru.otus.servlet.UsersServlet;
 
@@ -59,7 +60,7 @@ public class UsersWebServerSimple implements UsersWebServer {
 
     HandlerList handlers = new HandlerList();
     handlers.addHandler(resourceHandler);
-    handlers.addHandler(applySecurity(servletContextHandler, "/users", "/api/user/*"));
+    handlers.addHandler(applySecurity(servletContextHandler, ApiPaths.USERS, ApiPaths.API_USERS));
 
     server.setHandler(handlers);
     return server;
@@ -79,8 +80,8 @@ public class UsersWebServerSimple implements UsersWebServer {
 
   private ServletContextHandler createServletContextHandler() {
     ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-    servletContextHandler.addServlet(new ServletHolder(new UsersServlet(templateProcessor, transactionManager)), "/users");
-    servletContextHandler.addServlet(new ServletHolder(new UsersApiServlet(gson, transactionManager)), "/api/user/*");
+    servletContextHandler.addServlet(new ServletHolder(new UsersServlet(templateProcessor, transactionManager)), ApiPaths.USERS);
+    servletContextHandler.addServlet(new ServletHolder(new UsersApiServlet(gson, transactionManager)), ApiPaths.API_USERS);
     return servletContextHandler;
   }
 }
