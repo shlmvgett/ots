@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package ru.otus.protobuf.generated;
+
+option java_multiple_files = true;
+
+message CountMessage {
+  int64 initValue = 1;
+  int64 maxValue = 2;
+}
+
+message CountResponseMessage {
+  int64 serverValue = 1;
+}
+
+message Empty {}
+
+service CountService {
+  rpc getCount(CountMessage) returns (stream CountResponseMessage);
+}
